@@ -3,3 +3,13 @@ run_id,model,train_on,test_on,epoch,accuracy,f1_macro,f1_weighted,precision_macr
 20260530_122950_model002,model002,gtzan,gtzan,1,0.6628,0.6593,0.6594,0.6779,0.6842,1.0682,16.8,0.7161936560934892,configs/quickTest.yaml,quick gpu test
 20260530_123257_model001,model001,gtzan,gtzan,5,0.8239,0.8251,0.8235,0.828,0.8285,0.624,52.1,0.8030050083472454,configs/quickTest.yaml,quick gpu test
 20260530_123351_model002,model002,gtzan,gtzan,3,0.7863,0.7841,0.78,0.786,0.7915,0.6999,28.2,0.8013355592654424,configs/quickTest.yaml,quick gpu test
+20260530_133716_model001,model001,gtzan,gtzan,4,0.8264,0.8324,0.828,0.836,0.8317,0.6248,49.0,0.8046744574290484,configs/quickTest.yaml,quick gpu test
+20260530_133808_model002,model002,gtzan,gtzan,4,0.813,0.811,0.8098,0.811,0.8144,0.7006,30.3,0.8113522537562604,configs/quickTest.yaml,quick gpu test
+20260530_134027_model001,model001,gtzan,gtzan,19,0.8548,0.8514,0.8523,0.8513,0.8557,0.7975,279.4,0.8497495826377296,configs/gtzan_only.yaml,gtzan only training
+20260530_134509_model002,model002,gtzan,gtzan,18,0.8222,0.823,0.8187,0.8202,0.8294,0.8569,164.7,0.8263772954924875,configs/gtzan_only.yaml,gtzan only training
+20260530_134801_model001,model001,fma,fma,3,0.6375,0.6282,0.6324,0.6282,0.6329,1.1099,640.0,0.6277056277056277,configs/fma_only.yaml,fma only training
+20260530_135847_model002,model002,fma,fma,3,0.6372,0.6224,0.6278,0.6241,0.63,1.1015,355.9,0.6227581941867656,configs/fma_only.yaml,fma only training
+20260530_140454_model001,model001,gtzan+fma,gtzan,5,0.8272,0.6934,0.8285,0.6934,0.6955,0.6606,873.8,0.6577093660318288,configs/defaultTest.yaml,full training run
+20260530_140454_model001,model001,gtzan+fma,fma,5,0.6438,0.3208,0.6449,0.3219,0.3203,1.2864,873.8,0.6577093660318288,configs/defaultTest.yaml,full training run
+20260530_141937_model002,model002,gtzan+fma,gtzan,20,0.8197,0.6319,0.8188,0.6369,0.632,1.0171,964.3,0.6524915210018263,configs/defaultTest.yaml,full training run
+20260530_141937_model002,model002,gtzan+fma,fma,20,0.6264,0.3711,0.6228,0.372,0.3729,2.3321,964.3,0.6524915210018263,configs/defaultTest.yaml,full training run
