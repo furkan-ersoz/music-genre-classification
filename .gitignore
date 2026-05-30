@@ -49,3 +49,4 @@ results/
 *.log
 runs/
 wandb/
+._.DS_Store
