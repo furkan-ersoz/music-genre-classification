@@ -1,0 +1,28 @@
+run_notes: ""
+
+models:
+  - model001
+  - model002
+  - model003
+
+train_on:
+  - gtzan
+  - fma
+
+test_on:
+  - gtzan
+  - fma
+
+num_classes: 13
+batch_size: 32
+epochs: 50
+lr: 0.001
+scheduler: plateau        # plateau / cosine
+early_stopping_patience: 10
+img_size: 224
+num_workers: 4
+
+gtzan_labels: data/GTZAN/spectrogramsManuel/labels.csv
+gtzan_img_dir: data/GTZAN/spectrogramsManuel
+fma_labels: data/FMA_Small/spectrogramsManuel/labels.csv
+fma_img_dir: data/FMA_Small/spectrogramsManuel

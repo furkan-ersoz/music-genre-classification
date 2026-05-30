@@ -1,0 +1,12 @@
+run_notes: "ml pipeline test"
+
+train_on:
+  - gtzan
+  - fma
+
+test_on:
+  - gtzan
+  - fma
+
+gtzan_features: data/gtzan_features_manual.csv
+fma_features:   data/fma_features_manual.csv

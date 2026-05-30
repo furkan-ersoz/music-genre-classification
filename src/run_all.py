@@ -8,11 +8,13 @@ Usage:
 
 import argparse
 import sys
+import os
 import torch
 import yaml
 from datetime import datetime
 from pathlib import Path
 
+# Add src/ to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from dataset import build_dataloaders
@@ -48,6 +50,7 @@ def run_experiment(config: dict, config_path: str, device: torch.device) -> None
     print(f"Device   : {device}")
     print(f"{'='*60}\n")
 
+    # Build dataloaders once — shared across all models in this config
     print("Loading datasets...")
     train_loader, val_loader, test_loaders, label_encoder, num_classes = \
         build_dataloaders(config)
@@ -56,8 +59,9 @@ def run_experiment(config: dict, config_path: str, device: torch.device) -> None
     print(f"Train segments : {len(train_loader.dataset)}")
     print(f"Val segments   : {len(val_loader.dataset)}")
     for name, loader in test_loaders.items():
-        print(f"Test [{name}]    : {len(loader.dataset)} segments")
+        print(f"Test [{name}]  : {len(loader.dataset)} segments")
 
+    # Run each model sequentially
     for model_name in models_list:
         run_id = datetime.now().strftime("%Y%m%d_%H%M%S") + f"_{model_name}"
         print(f"\n{'─'*60}")
@@ -76,6 +80,7 @@ def run_experiment(config: dict, config_path: str, device: torch.device) -> None
             device=device,
         )
 
+        # Load best checkpoint for evaluation
         model.load_state_dict(
             torch.load(train_info["checkpoint_path"], map_location=device)
         )
