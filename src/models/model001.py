@@ -90,5 +90,5 @@ def get_model(num_classes: int, **kwargs) -> nn.Module:
         num_classes=num_classes,
         num_heads=kwargs.get("num_heads", 4),
         dropout=kwargs.get("dropout", 0.3),
-        freeze_until=kwargs.get("freeze_until", 2),
+        freeze_until=kwargs.get("freeze_until", 0),
     )
