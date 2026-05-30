@@ -1,4 +1,4 @@
-run_notes: "full training run"
+run_notes: "quick gpu test"
 
 models:
   - model001
@@ -6,18 +6,16 @@ models:
 
 train_on:
   - gtzan
-  - fma
 
 test_on:
   - gtzan
-  - fma
 
-num_classes: 13
+num_classes: 10
 batch_size: 32
-epochs: 50
-lr: 0.001
+epochs: 5
+lr: 0.0001
 scheduler: plateau
-early_stopping_patience: 10
+early_stopping_patience: 999
 img_size: 224
 num_workers: 4
 

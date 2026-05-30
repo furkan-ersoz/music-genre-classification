@@ -77,7 +77,7 @@ def run_experiment(config: dict, config_path: str, device: torch.device) -> None
         )
 
         model.load_state_dict(
-            torch.load(train_info["checkpoint_path"], map_location=device)
+            torch.load(train_info["checkpoint_path"], map_location=device, weights_only=True)
         )
 
         run_evaluation(
