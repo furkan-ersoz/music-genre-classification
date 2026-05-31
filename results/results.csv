@@ -19,3 +19,7 @@ run_id,model,train_on,test_on,epoch,accuracy,f1_macro,f1_weighted,precision_macr
 20260531_053820_model001,model001,gtzan+fma,fma,2,0.6429,0.3496,0.6449,0.355,0.3486,1.0166,260.3,0.6417949386903209,configs/quickFull.yaml,quick full test - 5 epochs
 20260531_054249_model002,model002,gtzan+fma,gtzan,4,0.7145,0.5529,0.7085,0.5707,0.5602,0.8712,179.2,0.6271849726063136,configs/quickFull.yaml,quick full test - 5 epochs
 20260531_054249_model002,model002,gtzan+fma,fma,4,0.6166,0.3304,0.6111,0.3366,0.3317,1.0868,179.2,0.6271849726063136,configs/quickFull.yaml,quick full test - 5 epochs
+20260531_055727_model001,model001,gtzan+fma,gtzan,25,0.828,0.6423,0.8325,0.6461,0.6398,0.7213,1816.7,0.6621445343073311,configs/defaultTest.yaml,full training run
+20260531_055727_model001,model001,gtzan+fma,fma,25,0.6449,0.426,0.6431,0.4261,0.4274,1.917,1816.7,0.6621445343073311,configs/defaultTest.yaml,full training run
+20260531_062752_model002,model002,gtzan+fma,gtzan,32,0.8105,0.6802,0.8134,0.684,0.6787,0.8587,1472.8,0.6532741977563267,configs/defaultTest.yaml,full training run
+20260531_062752_model002,model002,gtzan+fma,fma,32,0.6279,0.3744,0.6276,0.3751,0.3744,2.0975,1472.8,0.6532741977563267,configs/defaultTest.yaml,full training run
