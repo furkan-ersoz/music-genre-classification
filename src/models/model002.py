@@ -36,7 +36,7 @@ class AttentionPooling(nn.Module):
 
 class ResNetBiGRU(nn.Module):
     def __init__(self, num_classes: int, gru_hidden: int = 256,
-                 gru_layers: int = 2, dropout: float = 0.3,
+                 gru_layers: int = 2, dropout: float = 0.5,
                  freeze_until: int = 6):
         super().__init__()
 

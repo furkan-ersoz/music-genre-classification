@@ -41,13 +41,13 @@ def train_model(model: nn.Module,
 
     model.to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = Adam(model.parameters(), lr=lr)
+    optimizer = Adam(model.parameters(), lr=lr, weight_decay=1e-3)
 
     if scheduler_type == "cosine":
         scheduler = CosineAnnealingLR(optimizer, T_max=epochs)
     else:
         scheduler = ReduceLROnPlateau(optimizer, mode="max",
-                                      patience=5, factor=0.5)
+                                      patience=3, factor=0.5)
 
     best_val_acc  = 0.0
     best_epoch    = 0

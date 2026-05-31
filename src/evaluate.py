@@ -77,7 +77,8 @@ def evaluate_model(model: nn.Module,
 def save_confusion_matrix(all_labels, all_preds, label_encoder,
                           out_path: str, title: str = "") -> None:
     class_names = label_encoder.classes_
-    cm = confusion_matrix(all_labels, all_preds)
+    cm = confusion_matrix(all_labels, all_preds,
+                          labels=list(range(len(class_names))))
     fig, ax = plt.subplots(figsize=(10, 8))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                 xticklabels=class_names, yticklabels=class_names, ax=ax)

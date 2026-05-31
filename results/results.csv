@@ -13,3 +13,5 @@ run_id,model,train_on,test_on,epoch,accuracy,f1_macro,f1_weighted,precision_macr
 20260530_140454_model001,model001,gtzan+fma,fma,5,0.6438,0.3208,0.6449,0.3219,0.3203,1.2864,873.8,0.6577093660318288,configs/defaultTest.yaml,full training run
 20260530_141937_model002,model002,gtzan+fma,gtzan,20,0.8197,0.6319,0.8188,0.6369,0.632,1.0171,964.3,0.6524915210018263,configs/defaultTest.yaml,full training run
 20260530_141937_model002,model002,gtzan+fma,fma,20,0.6264,0.3711,0.6228,0.372,0.3729,2.3321,964.3,0.6524915210018263,configs/defaultTest.yaml,full training run
+20260531_052726_model001,model001,gtzan,gtzan,5,0.8314,0.8356,0.8326,0.8403,0.8369,0.5822,44.8,0.8080133555926544,configs/quickTest.yaml,quick gpu test
+20260531_052815_model002,model002,gtzan,gtzan,4,0.8222,0.8227,0.8182,0.8268,0.8272,0.6591,30.3,0.7946577629382304,configs/quickTest.yaml,quick gpu test

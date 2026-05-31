@@ -38,7 +38,7 @@ class TemporalAttention(nn.Module):
 
 class EfficientNetTemporalAttention(nn.Module):
     def __init__(self, num_classes: int, num_heads: int = 4,
-                 dropout: float = 0.3, freeze_until: int = 4):
+                 dropout: float = 0.5, freeze_until: int = 4):
         super().__init__()
 
         # ── Backbone ──────────────────────────────────────────────────────────
