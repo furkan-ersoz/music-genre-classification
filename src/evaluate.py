@@ -1,7 +1,7 @@
 """
 Evaluation and results reporting for music genre classification.
 Appends one row per (model, test_dataset) to results/results.csv.
-Saves confusion matrix and training curves under results/<run_id>/.
+Saves confusion matrix, training curves, and test results chart under results/<run_id>/.
 """
 
 import os
@@ -37,11 +37,7 @@ def _ensure_csv_header():
             writer.writeheader()
 
 
-def evaluate_model(model: nn.Module,
-                   test_loader,
-                   label_encoder,
-                   device: torch.device) -> dict:
-    """Run inference, return metrics dict."""
+def evaluate_model(model, test_loader, label_encoder, device):
     model.eval()
     criterion   = nn.CrossEntropyLoss()
     all_preds   = []
@@ -61,10 +57,9 @@ def evaluate_model(model: nn.Module,
             all_labels.extend(labels.cpu().numpy())
 
     avg_loss = total_loss / total_count
-
     return {
         "accuracy":        round(accuracy_score(all_labels, all_preds), 4),
-        "f1_macro":        round(f1_score(all_labels, all_preds, average="macro",  zero_division=0), 4),
+        "f1_macro":        round(f1_score(all_labels, all_preds, average="macro",    zero_division=0), 4),
         "f1_weighted":     round(f1_score(all_labels, all_preds, average="weighted", zero_division=0), 4),
         "precision_macro": round(precision_score(all_labels, all_preds, average="macro", zero_division=0), 4),
         "recall_macro":    round(recall_score(all_labels, all_preds, average="macro", zero_division=0), 4),
@@ -75,7 +70,7 @@ def evaluate_model(model: nn.Module,
 
 
 def save_confusion_matrix(all_labels, all_preds, label_encoder,
-                          out_path: str, title: str = "") -> None:
+                          out_path, title=""):
     class_names = label_encoder.classes_
     cm = confusion_matrix(all_labels, all_preds,
                           labels=list(range(len(class_names))))
@@ -91,36 +86,52 @@ def save_confusion_matrix(all_labels, all_preds, label_encoder,
     print(f"  Confusion matrix saved: {out_path}")
 
 
-def save_training_curves(history: dict, out_path: str) -> None:
+def save_training_curves(history, out_path):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
-
     ax1.plot(history["train_loss"], label="train")
     ax1.plot(history["val_loss"],   label="val")
     ax1.set_title("Loss")
     ax1.set_xlabel("Epoch")
     ax1.legend()
-
     ax2.plot(history["train_acc"], label="train")
     ax2.plot(history["val_acc"],   label="val")
     ax2.set_title("Accuracy")
     ax2.set_xlabel("Epoch")
     ax2.legend()
-
     plt.tight_layout()
     fig.savefig(out_path, dpi=100)
     plt.close(fig)
     print(f"  Training curves saved: {out_path}")
 
 
-def record_results(run_id: str,
-                   model_name: str,
-                   train_on: list,
-                   test_on: str,
-                   metrics: dict,
-                   train_info: dict,
-                   config_path: str,
-                   notes: str = "") -> None:
-    """Append one row to results/results.csv."""
+def save_test_results(test_metrics, out_path, model_name):
+    """Bar chart comparing accuracy and F1 across test datasets."""
+    datasets   = list(test_metrics.keys())
+    accuracies = [test_metrics[d]["accuracy"] for d in datasets]
+    f1s        = [test_metrics[d]["f1_macro"] for d in datasets]
+
+    x   = list(range(len(datasets)))
+    fig, ax = plt.subplots(figsize=(8, 5))
+    bars1 = ax.bar([i - 0.2 for i in x], accuracies, 0.4, label="Accuracy")
+    bars2 = ax.bar([i + 0.2 for i in x], f1s,        0.4, label="F1 Macro")
+    ax.set_xticks(x)
+    ax.set_xticklabels(datasets)
+    ax.set_ylim(0, 1)
+    ax.set_title(f"{model_name} — Test Results")
+    ax.legend()
+    for bar in list(bars1) + list(bars2):
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + 0.01,
+                f"{bar.get_height():.3f}",
+                ha="center", va="bottom", fontsize=9)
+    plt.tight_layout()
+    fig.savefig(out_path, dpi=100)
+    plt.close(fig)
+    print(f"  Test results chart saved: {out_path}")
+
+
+def record_results(run_id, model_name, train_on, test_on,
+                   metrics, train_info, config_path, notes=""):
     _ensure_csv_header()
     row = {
         "run_id":            run_id,
@@ -145,37 +156,24 @@ def record_results(run_id: str,
     print(f"  Result recorded → results/results.csv")
 
 
-def run_evaluation(model: nn.Module,
-                   test_loaders: dict,
-                   label_encoder,
-                   train_info: dict,
-                   run_id: str,
-                   model_name: str,
-                   train_on: list,
-                   config_path: str,
-                   config: dict,
-                   device: torch.device) -> None:
-    """
-    Full evaluation pipeline:
-        - Evaluate on each test dataset
-        - Save confusion matrices
-        - Save training curves
-        - Record to results.csv
-    """
+def run_evaluation(model, test_loaders, label_encoder,
+                   train_info, run_id, model_name, train_on,
+                   config_path, config, device):
     out_dir = Path("results") / run_id
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # Training curves (once per run)
     if "history" in train_info:
         save_training_curves(
             train_info["history"],
             str(out_dir / "training_curves.png")
         )
 
-    # Per-dataset evaluation
+    all_test_metrics = {}
+
     for dataset_name, test_loader in test_loaders.items():
         print(f"\n── Evaluating on {dataset_name} ──")
         metrics = evaluate_model(model, test_loader, label_encoder, device)
+        all_test_metrics[dataset_name] = metrics
 
         print(f"  accuracy={metrics['accuracy']}  "
               f"f1_macro={metrics['f1_macro']}  "
@@ -198,4 +196,12 @@ def run_evaluation(model: nn.Module,
             train_info=train_info,
             config_path=config_path,
             notes=config.get("run_notes", ""),
+        )
+
+    # Save combined test results chart
+    if len(all_test_metrics) > 0:
+        save_test_results(
+            all_test_metrics,
+            str(out_dir / "test_results.png"),
+            model_name,
         )
